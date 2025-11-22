@@ -1,1 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaViva - Monitoramento Hídrico e Climático</title>
+    <style>
+        /* Reset e configurações gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --warning-color: #fbbc05;
+            --danger-color: #ea4335;
+            --light-color: #f8f9fa;
+            --dark-color: #202124;
+            --gray-color: #5f6368;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #0d47a1);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2e8b47;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .btn-warning:hover {
+            background-color: #e6a700;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #d33426;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 115, 232, 0.8), rgba(13, 71, 161, 0.8)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a73e8"/><path d="M0 50 Q 25 30, 50 50 T 100 50" fill="%230d47a1"/></svg>');
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Seções */
+        section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        /* Alertas */
+        .alert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .alert-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .alert-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .alert-type {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .alert-type.risk {
+            background-color: var(--danger-color);
+        }
+
+        .alert-type.warning {
+            background-color: var(--warning-color);
+        }
+
+        .alert-type.info {
+            background-color: var(--primary-color);
+        }
+
+        .alert-date {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .alert-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .alert-card p {
+            margin-bottom: 1rem;
+            color: var(--gray-color);
+        }
+
+        .alert-action {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .alert-action h4 {
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .view-all {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Formulários */
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-section p {
+            color: #bdc1c6;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #3c4043;
+            color: #bdc1c6;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <span class="logo-icon">💧</span>
+                <h1>AquaViva</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#alertas">Alertas</a></li>
+                    <li><a href="#relatar">Relatar Problema</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Seção Hero -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h2>Protegendo Nossos Recursos Hídricos</h2>
+            <p>O AquaViva é um sistema que ajuda a escola e a comunidade a cuidar melhor da água e entender como o clima afeta o território.</p>
+            <a href="#alertas" class="btn">Ver Alertas Atuais</a>
+            <a href="#relatar" class="btn btn-warning">Relatar Problema</a>
+        </div>
+    </section>
+
+    <!-- Seção de Alertas Recentes -->
+    <section id="alertas">
+        <div class="container">
+            <h2 class="section-title">Alertas Recentes</h2>
+            <div class="alert-grid">
+                <!-- Alerta 1 -->
+                <div class="alert-card">
+                    <div class="alert-header">
+                        <span class="alert-type risk">Alto Risco</span>
+                        <span class="alert-date">15/10/2023</span>
+                    </div>
+                    <h3>Risco de Alagamento</h3>
+                    <p>Previsão de chuvas intensas para as próximas 48 horas. Áreas baixas podem ser afetadas.</p>
+                    <div class="alert-action">
+                        <h4>O que fazer:</h4>
+                        <p>Evite áreas de risco, verifique sistemas de drenagem e mantenha-se informado.</p>
+                    </div>
+                </div>
+
+                <!-- Alerta 2 -->
+                <div class="alert-card">
+                    <div class="alert-header">
+                        <span class="alert-type warning">Atenção</span>
+                        <span class="alert-date">12/10/2023</span>
+                    </div>
+                    <h3>Consumo Elevado de Água</h3>
+                    <p>Detectado aumento de 30% no consumo de água na escola esta semana.</p>
+                    <div class="alert-action">
+                        <h4>O que fazer:</h4>
+                        <p>Verifique possíveis vazamentos, feche torneiras corretamente e reutilize água quando possível.</p>
+                    </div>
+                </div>
+
+                <!-- Alerta 3 -->
+                <div class="alert-card">
+                    <div class="alert-header">
+                        <span class="alert-type info">Informação</span>
+                        <span class="alert-date">10/10/2023</span>
+                    </div>
+                    <h3>Calor Extremo</h3>
+                    <p>Temperaturas acima da média podem afetar a qualidade da água e aumentar a evaporação.</p>
+                    <div class="alert-action">
+                        <h4>O que fazer:</h4>
+                        <p>Mantenha-se hidratado, evite desperdício e proteja fontes de água do sol direto.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="view-all">
+                <a href="#" class="btn">Ver Todos os Alertas</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Relatar Problema -->
+    <section id="relatar" style="background-color: #e8f0fe;">
+        <div class="container">
+            <h2 class="section-title">Relatar Problema Relacionado à Água</h2>
+            <div class="form-container">
+                <form id="report-form">
+                    <div class="form-group">
+                        <label for="problem-type">Tipo de Problema</label>
+                        <select id="problem-type" class="form-control" required>
+                            <option value="">Selecione o tipo de problema</option>
+                            <option value="vazamento">Vazamento de água</option>
+                            <option value="desperdicio">Desperdício de água</option>
+                            <option value="lixo">Lixo perto de rios/córregos</option>
+                            <option value="alagamento">Ponto de alagamento</option>
+                            <option value="qualidade">Baixa qualidade da água</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Localização</label>
+                        <input type="text" id="location" class="form-control" placeholder="Onde o problema ocorre?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Descrição do Problema</label>
+                        <textarea id="description" class="form-control" placeholder="Descreva o problema em detalhes..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="urgency">Urgência</label>
+                        <select id="urgency" class="form-control" required>
+                            <option value="">Selecione a urgência</option>
+                            <option value="baixa">Baixa</option>
+                            <option value="media">Média</option>
+                            <option value="alta">Alta</option>
+                            <option value="emergencia">Emergência</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Enviar Relato</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Sobre -->
+    <section id="sobre">
+        <div class="container">
+            <h2 class="section-title">Sobre o AquaViva</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <p style="margin-bottom: 1.5rem; text-align: center;">
+                    O AquaViva é um sistema web desenvolvido para ajudar a escola e a comunidade a cuidar melhor da água 
+                    e entender como o clima afeta o território. Através de alertas e relatos, promovemos a conscientização 
+                    e ação rápida para proteger nossos recursos hídricos.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 2rem;">
+                    <div style="text-align: center; padding: 1.5rem; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Alertas Rápidos</h3>
+                        <p>Receba avisos sobre situações importantes relacionadas à água e clima.</p>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Relatos da Comunidade</h3>
+                        <p>Envie informações sobre problemas relacionados à água em sua área.</p>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Educação e Conscientização</h3>
+                        <p>Aprenda como agir para prevenir problemas e proteger os recursos hídricos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AquaViva</h3>
+                    <p>Um sistema para monitoramento hídrico e climático, ajudando a comunidade a proteger nossos recursos hídricos.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <p>Email: vivaaqua953@gmail.com</p>
+                    <p>Telefone: (81) 8179-3274</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Links Rápidos</h3>
+                    <p><a href="#inicio" style="color: #bdc1c6; text-decoration: none;">Início</a></p>
+                    <p><a href="#alertas" style="color: #bdc1c6; text-decoration: none;">Alertas</a></p>
+                    <p><a href="#relatar" style="color: #bdc1c6; text-decoration: none;">Relatar Problema</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AquaViva. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simulação de envio de formulário
+        document.getElementById('report-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Relato enviado com sucesso! Nossa equipe analisará as informações.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
